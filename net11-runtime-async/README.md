@@ -254,6 +254,36 @@ No state machine at all. The `await` compiles to a simple `call void AsyncHelper
 
 The `runtime-async` feature moves async machinery from **compiler-generated IL** to the **runtime/JIT**. This results in far less IL, fewer allocations, and the potential for the JIT to optimize suspension paths that the compiler could never see. The IL for the net11.0 build looks almost identical to what a synchronous version of the code would produce — the only difference is the `AsyncHelpers::Await()` call where `await` appears in the source.
 
+### Debugging impact
+
+The IL difference has a direct effect on the debugging experience. With traditional async (net10.0), when you set a breakpoint on `await Task.Delay(1000)`, the debugger is actually stepping through a compiler-generated `MoveNext()` method inside a hidden struct called `<<Main>$>d__0`. Your local variables have been hoisted into fields like `<>1__state` and `<>u__1`. The call stack is full of infrastructure frames.
+
+With runtime-async (net11.0), your method is just your method — `Console.WriteLine`, `Task.Delay`, `AsyncHelpers.Await`, `Console.WriteLine`, `ret`. When you hit a breakpoint, you're in the actual `<Main>$` method. Your locals are real locals on the stack, not fields on a hidden struct.
+
+For a 3-method async call chain, the difference is stark:
+
+**net10.0 stack trace (~13 frames):**
+```
+Program+<<Main>$>d__0.MoveNext()
+AsyncTaskMethodBuilder.SetResult()
+AsyncTaskMethodBuilder<T>.AwaitUnsafeOnCompleted(...)
+ServiceA+<GetDataAsync>d__1.MoveNext()
+AsyncTaskMethodBuilder.SetResult()
+AsyncTaskMethodBuilder<T>.AwaitUnsafeOnCompleted(...)
+ServiceB+<FetchAsync>d__2.MoveNext()
+...runtime plumbing...
+```
+
+**net11.0 stack trace (~5 frames):**
+```
+Program.<Main>$(string[])
+ServiceA.GetDataAsync()
+ServiceB.FetchAsync()
+...
+```
+
+The state machine frames, builder frames, and `MoveNext` indirection are all gone. What you see in the debugger matches what you wrote in the editor.
+
 ## Benchmark Results
 
 Tested on BenchmarkDotNet v0.16.0-nightly.20260324.479, Windows 11, 11th Gen Intel Core i7-11370H 3.30GHz, 4 physical cores, 31.84 GB RAM.
@@ -295,3 +325,34 @@ These results are from .NET 11.0 Preview 2 — the `runtime-async` feature is st
 - `AwaitYield` is **54% slower** (179 ns → 276 ns) **and allocates 3x more** (144B → 424B). This is the only benchmark that truly suspends, and the runtime's internal state-saving mechanism currently has more overhead than the compiler-generated state machine.
 
 **Takeaway:** In this early preview, runtime-async shows clear benefits for the synchronous-completion path (already-completed ValueTask), but the actual suspension path is not yet optimized. The extra allocations in `AwaitYield` (424B vs 144B) confirm the runtime is creating larger internal structures than the compiler's `AsyncTaskMethodBuilder` + state machine. This is expected to improve as .NET 11 matures toward release.
+
+### Why these results are expected (for now)
+
+These results are consistent with what Microsoft and the community are observing. The key context:
+
+**Core runtime libraries are not yet compiled with runtime-async.** In Preview 1 and 2, `System.Net.Http`, Kestrel, `System.Threading.Tasks`, and other framework code still use traditional compiler-generated async state machines. Microsoft explicitly acknowledges this and states it "is expected to change in upcoming previews." When our `AwaitYield` benchmark calls `Task.Yield()`, it crosses a boundary between runtime-async user code and traditional-async framework code, incurring a penalty.
+
+**Community benchmarks show the same pattern:**
+
+| Scenario | Change |
+|---|---|
+| Synthetic `Task.FromResult` chain (no framework boundary) | ~33% faster, ~42% less memory |
+| Nested async calls (no framework boundary) | ~66% faster, ~60% less memory |
+| 10,000 concurrent ops (hits framework code) | **41% slower** |
+| High-pressure parallel (hits framework code) | **23% slower** |
+
+Our `CompletedValueTask` (2.5x faster) aligns with the "synthetic fast path" wins. Our `AwaitYield` (54% slower, 3x more allocations) aligns with the "hits framework code" regressions.
+
+**Microsoft's official messaging focuses on debuggability, not throughput.** The [.NET 11 Preview 1](https://devblogs.microsoft.com/dotnet/dotnet-11-preview-1/) and [Preview 2](https://devblogs.microsoft.com/dotnet/dotnet-11-preview-2/) announcements emphasize cleaner stack traces (13 frames → 5 for a 3-method async chain), better debugger stepping through `await` boundaries, and reduced NativeAOT binary sizes. They are notably restrained about raw performance claims. Stephen Toub has not yet published a "Performance Improvements in .NET 11" blog post.
+
+**The full benefits are expected once core libraries are recompiled** with runtime-async in later previews toward GA (November 2026). At that point, the boundary-crossing penalty disappears and the runtime can optimize the entire async call chain end-to-end.
+
+### References
+
+- [What's new in .NET 11 runtime (Microsoft Learn)](https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-11/runtime)
+- [.NET 11 Preview 1 announcement](https://devblogs.microsoft.com/dotnet/dotnet-11-preview-1/)
+- [.NET 11 Preview 2 announcement](https://devblogs.microsoft.com/dotnet/dotnet-11-preview-2/)
+- [Runtime-Async design spec](https://github.com/dotnet/runtime/blob/main/docs/design/specs/runtime-async.md)
+- [Runtime-Async tracking issue #109632](https://github.com/dotnet/runtime/issues/109632)
+- [.NET 9 Runtime Async Experiment #94620](https://github.com/dotnet/runtime/issues/94620) — concluded runtime-async was "at least as good as compiler-async" under controlled conditions
+- [Steven Giesel: "New runtime async is hitting .NET 11"](https://steven-giesel.com/blogPost/1fb10ed2-df84-4080-b660-72c04a4cc674) — community benchmarks showing 33% faster / 42% less memory in synthetic cases
