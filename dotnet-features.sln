@@ -19,34 +19,55 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncCases.Benchmarks", "net11-runtime-async\bench\AsyncCases.Benchmarks\AsyncCases.Benchmarks.csproj", "{84E94974-C553-4108-92A6-28202AAFFA58}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "field-keyword", "field-keyword", "{AC37BF44-9175-0602-A29F-47563313A574}"
+	ProjectSection(SolutionItems) = preProject
+		field-keyword\README.md = field-keyword\README.md
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "console-app", "field-keyword\console-app\console-app.csproj", "{8B0D97CF-2744-4FB8-86AD-D5C7A9E7C44B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "null-conditional-assignment", "null-conditional-assignment", "{FFE4705F-C3E0-C558-7E89-5CB404BB2B07}"
+	ProjectSection(SolutionItems) = preProject
+		null-conditional-assignment\README.md = null-conditional-assignment\README.md
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "console-app", "null-conditional-assignment\console-app\console-app.csproj", "{8B76FBE0-2EED-4840-A627-AA19261B4418}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "interceptors", "interceptors", "{49614BCA-EDDD-9A45-325F-73C48AD97512}"
+	ProjectSection(SolutionItems) = preProject
+		interceptors\README.md = interceptors\README.md
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "console-app", "interceptors\console-app\console-app.csproj", "{E1FF272F-94B6-4DAF-B1EB-52F87515E59E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "system-threading-lock", "system-threading-lock", "{9C865978-3D0F-EE69-3E4B-2361CC8B54AB}"
+	ProjectSection(SolutionItems) = preProject
+		system-threading-lock\README.md = system-threading-lock\README.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bench", "bench", "{36356E14-2495-06BB-DB7E-7F4E0CB160F3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lock.Benchmarks", "system-threading-lock\bench\Lock.Benchmarks\Lock.Benchmarks.csproj", "{F741C346-422E-48C6-8040-C9B7ECEDF39E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "extension-members", "extension-members", "{CEAB7D86-A552-F2AA-AE02-BB5EA7CCD2C5}"
+	ProjectSection(SolutionItems) = preProject
+		extension-members\README.md = extension-members\README.md
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "console-app", "extension-members\console-app\console-app.csproj", "{97E95594-F1BA-4083-B2BE-AB3F793442E6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "frozen-collections", "frozen-collections", "{901D1D3B-5469-5923-1833-84550923A779}"
+	ProjectSection(SolutionItems) = preProject
+		frozen-collections\README.md = frozen-collections\README.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bench", "bench", "{A79CA51C-C8A7-9168-7282-E5EBA2ABDEF3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frozen.Benchmarks", "frozen-collections\bench\Frozen.Benchmarks\Frozen.Benchmarks.csproj", "{CCF12416-EBFC-4D8E-8725-996DC6A320A0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "params-span", "params-span", "{B4D5AD4D-8B2A-ED01-5BD0-55748C6A08E1}"
+	ProjectSection(SolutionItems) = preProject
+		params-span\README.md = params-span\README.md
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "console-app", "params-span\console-app\console-app.csproj", "{59791F10-B618-43CB-BB4F-DEA8E2AF5977}"
 EndProject
@@ -55,16 +76,25 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParamsSpan.Benchmarks", "params-span\bench\ParamsSpan.Benchmarks\ParamsSpan.Benchmarks.csproj", "{A852092F-AD81-42D8-BDDA-A745B19C2BCD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "native-aot", "native-aot", "{59A2B009-55A9-DD81-30AE-A9238748F188}"
+	ProjectSection(SolutionItems) = preProject
+		native-aot\README.md = native-aot\README.md
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "console-app", "native-aot\console-app\console-app.csproj", "{9E0F3176-3849-40D9-92E2-05C601E15B8E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "task-when-each", "task-when-each", "{48659C4E-EA10-CA30-C6C8-D4F473664EEE}"
+	ProjectSection(SolutionItems) = preProject
+		task-when-each\README.md = task-when-each\README.md
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "console-app", "task-when-each\console-app\console-app.csproj", "{476DCB1A-5456-4A1E-B99A-175226C96B95}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhenEach.Benchmarks", "task-when-each\bench\WhenEach.Benchmarks\WhenEach.Benchmarks.csproj", "{5C4D2B91-4A30-4C18-BD1E-94610FB66379}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ref-struct-interfaces", "ref-struct-interfaces", "{C9990375-3A33-CC5D-8D92-1F7D563F42CB}"
+	ProjectSection(SolutionItems) = preProject
+		ref-struct-interfaces\README.md = ref-struct-interfaces\README.md
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "console-app", "ref-struct-interfaces\console-app\console-app.csproj", "{80328416-0FFA-4563-9F48-D27B95198759}"
 EndProject
@@ -73,6 +103,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RefStruct.Benchmarks", "ref-struct-interfaces\bench\RefStruct.Benchmarks\RefStruct.Benchmarks.csproj", "{C8DCE310-76E8-4B2D-867A-EACDF2B8DCEF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "zip-archive-improvements", "zip-archive-improvements", "{A8914C4C-2569-99E4-72FB-61AEBE5E8D19}"
+	ProjectSection(SolutionItems) = preProject
+		zip-archive-improvements\README.md = zip-archive-improvements\README.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bench", "bench", "{E2C97C59-93C0-54FA-67CB-01BA5845A882}"
 EndProject
