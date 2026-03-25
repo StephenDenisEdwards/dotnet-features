@@ -19,3 +19,4 @@ A collection of focused investigations into new and existing .NET and C# feature
 | [ref-struct-interfaces](./ref-struct-interfaces/README.md) | ref struct interfaces (C# 13) | `ref struct` implementing `IDisposable` — benchmarks showing allocation savings with `Span<T>` in generic contexts. |
 | [native-aot](./native-aot/README.md) | NativeAOT | JIT vs NativeAOT comparison — startup time, binary size, and working set. |
 | [zip-archive-improvements](./zip-archive-improvements/README.md) | ZipArchive compression | Sequential vs parallel compression benchmarks. |
+| [source-generators](./source-generators/README.md) | Source Generators | Incremental source generator that auto-generates `ToString()` overrides from `[GenerateToString]`-annotated classes. |
